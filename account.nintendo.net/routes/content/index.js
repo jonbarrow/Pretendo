@@ -100,7 +100,9 @@ routes.get('/agreements/:type/:region/:version', (request, response) => {
         return response.send(json2xml(error));
     }
 
-    if (
+    // For some reason this gave me trouble??
+    // For some reason using this check will throw an error in the WiiU
+    /*if (
         !headers['x-nintendo-device-id'] ||
         !constants.REGEX.HEADER_FORMATS.DEVICE_ID.test(headers['x-nintendo-device-id'])
     ) {
@@ -114,8 +116,9 @@ routes.get('/agreements/:type/:region/:version', (request, response) => {
         }
 
         return response.send(json2xml(error));
-    }
+    }*/
 
+    
     if (!headers['x-nintendo-serial-number']) {
         let error = {
             errors: {
@@ -129,6 +132,7 @@ routes.get('/agreements/:type/:region/:version', (request, response) => {
         return response.send(json2xml(error));
     }
 
+    
     if (!headers['x-nintendo-platform-id']) {
         let error = {
             errors: {
@@ -142,6 +146,7 @@ routes.get('/agreements/:type/:region/:version', (request, response) => {
         return response.send(json2xml(error));
     }
 
+    
     if (!headers['x-nintendo-region']) {
         let error = {
             errors: {
@@ -156,6 +161,7 @@ routes.get('/agreements/:type/:region/:version', (request, response) => {
         return response.send(json2xml(error));
     }
 
+    
     if (!constants.REGEX.HEADER_FORMATS.REGION.test(headers['x-nintendo-region'])) {
         let error = {
             errors: {
@@ -170,6 +176,7 @@ routes.get('/agreements/:type/:region/:version', (request, response) => {
         return response.send(json2xml(error));
     }
 
+    
     if (
         !headers['x-nintendo-system-version'] ||
         !constants.REGEX.HEADER_FORMATS.SYSTEM_VERSION.test(headers['x-nintendo-system-version'])
@@ -186,6 +193,7 @@ routes.get('/agreements/:type/:region/:version', (request, response) => {
         return response.send(json2xml(error));
     }
 
+    
     if (headers['x-nintendo-system-version'] < constants.MINIMUN_SYSTEM_VERSION) {
         let error = {
             errors: {
@@ -199,6 +207,7 @@ routes.get('/agreements/:type/:region/:version', (request, response) => {
         return response.send(json2xml(error));
     }
 
+    
     if (!VALID_REGIONS.contains(region)) {
         let error = {
             errors: {
@@ -212,6 +221,7 @@ routes.get('/agreements/:type/:region/:version', (request, response) => {
         return response.send(json2xml(error));
     }
 
+    
     if (!fs.pathExistsSync(path.join(__dirname, 'storage', 'agreements', type, region, version + '.xml'))) {
         let error = {
             errors: {
@@ -224,6 +234,8 @@ routes.get('/agreements/:type/:region/:version', (request, response) => {
 
         return response.send(json2xml(error));
     }
+
+    
     /*
     // ALSO NEED TO FIGURE OUT WHEN TO THROW ERROR 1102:
     let error = {
@@ -240,7 +252,7 @@ routes.get('/agreements/:type/:region/:version', (request, response) => {
     // SEEMS TO BE RELATED TO THE `X-Nintendo-Region` HEADER.
     // SETTING `X-Nintendo-Region` TO 4 (and `:region` is `US`) WHEN `:type` IS `Nintendo-Network-EULA` THROWS ERROR 1102
     */
-
+    
     response.sendFile(path.join(__dirname, 'storage', 'agreements', type, region, version + '.xml'));
 });
 

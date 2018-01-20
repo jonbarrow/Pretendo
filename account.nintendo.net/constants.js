@@ -1,7 +1,10 @@
 module.exports = {
+    URL_ENDPOINTS: {
+        mii: 'http://mii-secure.account.riiu.net/'
+    },
     LATEST_SYSTEM_VERSION: '0230',
     MINIMUN_SYSTEM_VERSION: '0209',
-    PID_SORT_LIST = '0123456789',
+    PID_SORT_LIST: '0123456789',
     VALID_CLIENT_ID_SECRET_PAIRS: {
         // 'Key' is the client ID, 'Value' is the client secret
         'a2efa818a34fa16b8afbc8a74eba3eda': 'c91cdb5658bd4954ade78533a339cf9a'

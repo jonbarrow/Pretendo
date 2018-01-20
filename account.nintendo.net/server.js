@@ -26,7 +26,9 @@ require('greenlock-express').create({
 let port = 80,
     path = require('path'),
     express = require('express'),
-    subdomain = require('express-subdomain')
+    subdomain = require('express-subdomain'),
+    expressXMLBodyParser = require('express-xml-bodyparser'),
+    XMLMiddleware = require('./xml-middleware'),
     colors = require('colors'),
     morgan = require('morgan'),
     app = express(),
@@ -36,20 +38,16 @@ let port = 80,
 const ROUTES = {
     CONTENT: require('./routes/content'),
     DEVICES: require('./routes/devices'),
+    PEOPLE: require('./routes/people'),
+    SUPPORT: require('./routes/support'),
 }
 
 // START APPLICATION
 
-// Create normal router
-app.use(morgan('dev'));
-app.use(express.json());
-app.use(express.urlencoded({
-    extended: true
-}));
-
-// Create API router
+// Create router
 app.use(morgan('dev'));
 router.use(express.json());
+router.use(XMLMiddleware());
 router.use(express.urlencoded({
     extended: true
 }));
@@ -60,6 +58,9 @@ app.use(subdomain('account', router));
 // Setup routes
 router.use('/v1/api/content', ROUTES.CONTENT); // content API routes
 router.use('/v1/api/devices', ROUTES.DEVICES); // device API routes
+router.use('/v1/api/people', ROUTES.PEOPLE); // people API routes
+router.use('/v1/api/support', ROUTES.SUPPORT); // support API routes
+
 
 // 404 handler
 router.use((request, response) => {

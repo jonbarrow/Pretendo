@@ -5,14 +5,6 @@ let routes = require('express').Router(),
     fs = require('fs-extra'),
     json2xml = require('json2xml');
 
-const VALID_REGIONS = [
-    'US', 'JP', 'GB', 'DE', 'FR'
-];
-
-const VALID_LANGUAGES = [
-    'en'
-];
-
 /**
  * [GET]
  * Replacement for: https://account.nintendo.net/v1/api/devices/@current/status
@@ -173,7 +165,3 @@ routes.get('/@current/status', (request, response) => {
 });
 
 module.exports = routes;
-
-Array.prototype.contains = function(el) { // polyfill custom Array method
-    return this.indexOf(el) > -1;
-}

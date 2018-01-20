@@ -1,11 +1,32 @@
-let constants = require('./constants');
+let constants = require('./constants'), 
+    database = require('./db');
 
-function generatePID() {
+async function generatePID() {
     let pid = '';
-    for (var i=0;i<8;i++) {
+
+    for (var i=0;i<10;i++) {
         pid += constants.PID_SORT_LIST.charAt(Math.floor(Math.random() * constants.PID_SORT_LIST.length));
     }
+
+    let does_pid_inuse = await database.user_collection.findOne({
+        pid: pid
+    });
+
+    if (does_pid_inuse) {
+        return await generatePID();
+    }
+
     return pid;
+}
+
+function generateRandID(length = 10) {
+    let id = '';
+
+    for (var i=0;i<length;i++) {
+        id += constants.PID_SORT_LIST.charAt(Math.floor(Math.random() * constants.PID_SORT_LIST.length));
+    }
+
+    return id;
 }
 
 function generateNintendoHashedPWrd(password, pid) {
@@ -30,9 +51,23 @@ function bufferToHex(buff) {
     return result;
 }
 
+async function doesUserExist(username) {
+    let user = await database.user_collection.findOne({
+        username: username.toLowerCase()
+    });
+    
+    if (user) {
+        return true;
+    }
+
+    return false;
+}
+
 
 
 module.exports = {
     generatePID: generatePID,
-    generateNintendoHashedPWrd: generateNintendoHashedPWrd
+    generateRandID: generateRandID,
+    generateNintendoHashedPWrd: generateNintendoHashedPWrd,
+    doesUserExist: doesUserExist
 }
