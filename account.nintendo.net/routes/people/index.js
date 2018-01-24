@@ -3,6 +3,7 @@ let routes = require('express').Router(),
     constants = require('../../constants'),
     database = require('../../db'),
     mailer = require('../../mailer'),
+    RateLimit = require('express-rate-limit'),
     randtoken = require('rand-token'),
     json2xml = require('json2xml'),
     bcrypt = require('bcryptjs'),
@@ -16,12 +17,50 @@ let routes = require('express').Router(),
  * Replacement for: https://account.nintendo.net/v1/api/people/
  * Description: Registers a user
  */
-routes.post('/', async (request, response) => {
+routes.post('/', new RateLimit({
+    // THIS RATELIMIT IS PUT IN TO PLACE AS A TEMP SOLUTION TO BOT SPAM.
+    // WE CANNOT 1:1 CLONE THE CHECKS AND ERRORS FROM THIS ENDPOINT.
+    // THIS IS BECAUSE NINTENDO SEEMS TO VALIDATE A CONSOLES IDENTIFICATION HEADERS AGAINST AN
+    // INTERNAL DATABASE TO VERIFY A CONSOLE IS LEGITIMATE.
+    // THEY THEN SEEM TO DO FURTHER CHECKS USING THE CONSOLE IDENTIFICATION WHICH I HAVE NOT FIGURED
+    // OUT YET. BECAUSE OF THIS, ALL CUSTOM SERVERS WILL INHERENTLY BE LESS SECURE.
+
+    windowMs: 1*60*1000,
+    max: 1,
+    message: json2xml({
+        errors: {
+            error: {
+                cause: 'Bad Request',
+                code: '1600',
+                message: 'Unable to process request'
+            }
+        }
+    })
+}), async (request, response) => {
     response.set('Server', 'Nintendo 3DS (http)');
     response.set('X-Nintendo-Date', new Date().getTime());
+    response.set('Content-Type', 'application/xml;charset=UTF-8');
 
     let user_data = request.body,
         headers = request.headers;
+
+    let account_exists = await database.user_collection.findOne({
+        user_id: user_data.user_id
+    });
+
+    if (account_exists) {
+        let error = {
+            errors: {
+                error: {
+                    cause: 'userId',
+                    code: '0100',
+                    message: 'Account ID already exists'
+                }
+            }
+        }
+
+        return response.send(json2xml(error));
+    }
 
     if (
         !headers['x-nintendo-client-id'] ||
@@ -29,7 +68,6 @@ routes.post('/', async (request, response) => {
         !constants.VALID_CLIENT_ID_SECRET_PAIRS[headers['x-nintendo-client-id']] ||
         headers['x-nintendo-client-secret'] !== constants.VALID_CLIENT_ID_SECRET_PAIRS[headers['x-nintendo-client-id']]
     ) {
-        response.set('Content-Type', 'text/xml');
 
         let error = {
             errors: {
@@ -45,7 +83,6 @@ routes.post('/', async (request, response) => {
     }
 
     if (!headers['x-nintendo-serial-number']) {
-        response.set('Content-Type', 'text/xml');
         
         let error = {
             errors: {
@@ -60,7 +97,6 @@ routes.post('/', async (request, response) => {
     }
 
     if (!headers['x-nintendo-region']) {
-        response.set('Content-Type', 'text/xml');
         
         let error = {
             errors: {
@@ -80,7 +116,6 @@ routes.post('/', async (request, response) => {
         !headers['x-nintendo-device-id'] ||
         !headers['x-nintendo-device-cert']
     ) {
-        response.set('Content-Type', 'text/xml');
         
         let error = {
             errors: {

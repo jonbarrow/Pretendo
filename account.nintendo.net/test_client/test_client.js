@@ -51,7 +51,7 @@ function apiPostRequest(uri, payload, options, cb) {
 
     let end_buffer = '';
     
-    let request = handler.request(options, (response) => {
+    let request = http.request(options, (response) => {
         var data = '';
 
         response.on('data', (chunk) => {

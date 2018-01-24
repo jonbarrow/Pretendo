@@ -13,6 +13,7 @@
     "bcryptjs": "^2.4.3",
     "colors": "^1.1.2",
     "express": "^4.16.2",
+    "express-rate-limit": "^2.11.0",
     "express-subdomain": "^1.0.5",
     "fs-extra": "^5.0.0",
     "greenlock-express": "^2.0.12",

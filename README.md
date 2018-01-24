@@ -65,12 +65,6 @@ if (oSession.HostnameIs("account.nintendo.net"))
 
 You should now see traffic from your WiiU flow into Fiddler, and be proxied to your custom server
 
-# Areas of concern
-### SSL
-Currently none of these servers implement SSL on their own. This will need to be done by you.
-### Account registration spam
-Currently it is possible to spam `/v1/api/people` from the `account.nintendo.net` server of this repo to spam account creation. Nintendo is able to prevent this through a series of checks that I have set to figure out, and as such I have not implemented those checks. I assume the checks have something to do with the console identification headers, probably referencing an internal database at Nintendo, however I really have no idea. The errors being thrown during my testing were not clear enough. Currently the most secure way to do account creation is to block registration from the console itself, and force a user to register online using a captcha, then allow the user to _login_ using the console.
-
 # Currently implemented endpoints:
 - [GET] https://account.nintendo.net/v1/api/devices/@current/status
 - [GET] https://account.nintendo.net/v1/api/content/agreements/TYPE/REGION/VERSION (partly, need help<sup id="a1">[1](#f1)</sup>)

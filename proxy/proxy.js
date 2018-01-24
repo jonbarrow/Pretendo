@@ -3,6 +3,7 @@ Proxy example ripped from `http-proxy` GH repo.
 Maybe can be modified to proxy requests to custom servers without patching NAND?
 */
 
+/*
 let port = 8213, 
     http = require('http'),
     net = require('net'),
@@ -32,3 +33,8 @@ server.on('connect', (request, socket) => {
         socket.pipe(srvSocket);
     });
 });
+*/
+
+let proxy = require('proxy-tamper').start({port: 8080});
+
+proxy.tamper(/block/, 'This content is blocked!');
