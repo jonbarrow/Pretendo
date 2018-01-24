@@ -65,10 +65,16 @@ if (oSession.HostnameIs("account.nintendo.net"))
 
 You should now see traffic from your WiiU flow into Fiddler, and be proxied to your custom server
 
+# Areas of concern
+### SSL
+Currently none of these servers implement SSL on their own. This will need to be done by you.
+### Account registration spam
+Currently it is possible to spam `/v1/api/people` from the `account.nintendo.net` server of this repo to spam account creation. Nintendo is able to prevent this through a series of checks that I have set to figure out, and as such I have not implemented those checks. I assume the checks have something to do with the console identification headers, probably referencing an internal database at Nintendo, however I really have no idea. The errors being thrown during my testing were not clear enough. Currently the most secure way to do account creation is to block registration from the console itself, and force a user to register online using a captcha, then allow the user to _login_ using the console.
+
 # Currently implemented endpoints:
 - [GET] https://account.nintendo.net/v1/api/devices/@current/status
 - [GET] https://account.nintendo.net/v1/api/content/agreements/TYPE/REGION/VERSION (partly, need help<sup id="a1">[1](#f1)</sup>)
-- [GET] https://account.nintendo.net/v1/api/content/time_zones/REGION/LANGUAGE (partly, need help<sup id="a2">[2](#f2)</sup>)
+- [GET] https://account.nintendo.net/v1/api/content/time_zones/REGION/LANGUAGE
 - [GET] https://account.nintendo.net/v1/api/people/USERNAME
 - [POST] https://account.nintendo.net/v1/api/support/validate/email
 - [POST] https://account.nintendo.net/v1/api/people (PARTLY! NEED HELP!<sup id="a3">[3](#f3)</sup>)
@@ -79,7 +85,7 @@ You should now see traffic from your WiiU flow into Fiddler, and be proxied to y
 
 <b id="f1">1</b> I do not know what other `TYPE`'s there are. I currently only know of one, `Nintendo-Network-EULA`, I still am unsure as to when I should throw error `1102` and I lack the remaining data for the rest of the EULA agreements. [↩](#a1)
 
-<b id="f2">2</b> I simply lack the rest of the timezone lists. [↩](#a2)
+~~<b id="f2">2</b> I simply lack the rest of the timezone lists.~~
 
 <b id="f3">3</b> There are MANY values that Nintendo seems to generate on their servers. I have no idea what some of these values mean and where/how they are used. Because of this I am unsure how to properly generate these values, and I am using placeholder values instead! (see here for an example of what the return for an account is https://github.com/RedDuckss/csms/blob/master/OFFICIAL_SCHEMA.md#grab-profile)
 

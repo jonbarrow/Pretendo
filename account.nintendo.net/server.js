@@ -27,7 +27,6 @@ let port = 80,
     path = require('path'),
     express = require('express'),
     subdomain = require('express-subdomain'),
-    expressXMLBodyParser = require('express-xml-bodyparser'),
     XMLMiddleware = require('./xml-middleware'),
     colors = require('colors'),
     morgan = require('morgan'),
@@ -40,6 +39,8 @@ const ROUTES = {
     DEVICES: require('./routes/devices'),
     PEOPLE: require('./routes/people'),
     SUPPORT: require('./routes/support'),
+    OAUTH20: require('./routes/oauth20'),
+    PROVIDER: require('./routes/provider'),
 }
 
 // START APPLICATION
@@ -60,6 +61,8 @@ router.use('/v1/api/content', ROUTES.CONTENT); // content API routes
 router.use('/v1/api/devices', ROUTES.DEVICES); // device API routes
 router.use('/v1/api/people', ROUTES.PEOPLE); // people API routes
 router.use('/v1/api/support', ROUTES.SUPPORT); // support API routes
+router.use('/v1/api/oauth20', ROUTES.OAUTH20); // OAuth API routes
+router.use('/v1/api/provider', ROUTES.PROVIDER); // OAuth API routes
 
 
 // 404 handler
