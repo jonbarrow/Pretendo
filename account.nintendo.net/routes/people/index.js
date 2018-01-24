@@ -2,6 +2,8 @@ let routes = require('express').Router(),
     helpers = require('../../helpers'),
     constants = require('../../constants'),
     database = require('../../db'),
+    mailer = require('../../mailer'),
+    randtoken = require('rand-token'),
     json2xml = require('json2xml'),
     bcrypt = require('bcryptjs'),
     moment = require('moment'),
@@ -15,6 +17,9 @@ let routes = require('express').Router(),
  * Description: Registers a user
  */
 routes.post('/', async (request, response) => {
+    response.set('Server', 'Nintendo 3DS (http)');
+    response.set('X-Nintendo-Date', new Date().getTime());
+
     let user_data = request.body,
         headers = request.headers;
 
@@ -24,6 +29,8 @@ routes.post('/', async (request, response) => {
         !constants.VALID_CLIENT_ID_SECRET_PAIRS[headers['x-nintendo-client-id']] ||
         headers['x-nintendo-client-secret'] !== constants.VALID_CLIENT_ID_SECRET_PAIRS[headers['x-nintendo-client-id']]
     ) {
+        response.set('Content-Type', 'text/xml');
+
         let error = {
             errors: {
                 error: {
@@ -38,6 +45,8 @@ routes.post('/', async (request, response) => {
     }
 
     if (!headers['x-nintendo-serial-number']) {
+        response.set('Content-Type', 'text/xml');
+        
         let error = {
             errors: {
                 error: {
@@ -51,6 +60,8 @@ routes.post('/', async (request, response) => {
     }
 
     if (!headers['x-nintendo-region']) {
+        response.set('Content-Type', 'text/xml');
+        
         let error = {
             errors: {
                 error: {
@@ -69,6 +80,8 @@ routes.post('/', async (request, response) => {
         !headers['x-nintendo-device-id'] ||
         !headers['x-nintendo-device-cert']
     ) {
+        response.set('Content-Type', 'text/xml');
+        
         let error = {
             errors: {
                 error: {
