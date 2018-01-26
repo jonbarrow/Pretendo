@@ -29,9 +29,5 @@
     "puid": "^1.0.7",
     "python-struct": "^1.0.6",
     "rand-token": "^0.4.0"
-  },
-  "devDependencies": {
-    "async": "^2.6.0",
-    "request": "^2.83.0"
   }
 }

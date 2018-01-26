@@ -1,4 +1,4 @@
-# RiiU
+# Pretendo
 
 [![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](http://forthebadge.com)
 
@@ -14,7 +14,7 @@ Not far at all. Currently only a few basic endpoints are implemented, and a few 
 # How do I get it running and connect my WiiU?
 ### Setup:
 1. Download [NodeJS](https://nodejs.org/en/)
-2. Clone this repo or [download the source](https://github.com/RedDuckss/RiiU/archive/master.zip)
+2. Clone this repo or [download the source](https://github.com/RedDuckss/Pretendo/archive/master.zip)
 3. Open a terminal/command prompt of any kind and enter the repo
 4. Enter the folder for whatever server you want online
 5. Run `npm i` in the terminal/command prompt to install all the depends
@@ -53,12 +53,12 @@ if (oSession.HostnameIs("account.nintendo.net"))
     if (oSession.HTTPMethodIs("CONNECT"))
     {
         // This is just a fake tunnel for CONNECT requests
-        oSession["x-replywithtunnel"] = "RiiUTunnel";
+        oSession["x-replywithtunnel"] = "PretendoTunnel";
         return;
     }
 
-    // Change "http://account.riiu.net" to your custom WiiU server address
-    oSession.fullUrl = "http://account.riiu.net" + oSession.PathAndQuery;
+    // Change "http://account.pretendo.cc" to your custom WiiU server address
+    oSession.fullUrl = "http://account.pretendo.cc" + oSession.PathAndQuery;
 }
 ```
 25. Restart Fiddler to apply changes
