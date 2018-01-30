@@ -134,7 +134,9 @@ routes.post('/', new RateLimit({
     let pid = await helpers.generatePID(),
         password = bcrypt.hashSync(helpers.generateNintendoHashedPWrd(user_data.password, pid), 10),
         create_date = moment().format('YYYY-MM-DDTHH:MM:SS'),
-        mii_hash = new puid(true).generate();
+        mii_hash = new puid(true).generate(),
+        email_code = helpers.generateRandID(6),
+        email_token = randtoken.generate(32);
 
     let document = {
         accounts: [ // WTF even is this??
@@ -199,6 +201,13 @@ routes.post('/', new RateLimit({
         user_id: user_data.user_id,
         utc_offset: (moment.tz(user_data.tz_name).utcOffset() * 60),
         sensitive: {
+            tokens: {
+                refresh: ''
+            },
+            email_confims: {
+                token: email_token,
+                code: email_code,
+            },
             password: password,
             linked_devices: {
                 wiiu: {
@@ -218,6 +227,20 @@ routes.post('/', new RateLimit({
     // I have not yet cracked the Mii data format. All that I know is that it is base64 encoded.
 
     await database.user_collection.insert(document);
+
+    mailer.send(
+        user_data.email,
+        '[Prentendo Network] Please confirm your e-mail address',
+        `Hello,
+
+        Your Prentendo Network ID activation is almost complete.  Please click the link below to confirm your e-mail address and complete the activation process.
+        
+        id.prentendo.cc/account/email-confirmation?token=` + email_token + `
+        
+        If you are unable to connect to the above URL, please enter the following confirmation code on the device to which your Prentendo Network ID is linked.
+        
+        <<Confirmation code: ` + email_code + `>>`
+    )
 
     response.send(json2xml({
         person: {

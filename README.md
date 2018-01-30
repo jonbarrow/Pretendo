@@ -72,6 +72,7 @@ You should now see traffic from your WiiU flow into Fiddler, and be proxied to y
 - [GET] https://account.nintendo.net/v1/api/people/USERNAME
 - [POST] https://account.nintendo.net/v1/api/support/validate/email
 - [POST] https://account.nintendo.net/v1/api/people (PARTLY! NEED HELP!<sup id="a3">[3](#f3)</sup>)
+- [POST] https://account.nintendo.net/v1/api/oauth20/access_token/generate (Both `password` and `refresh_token` grant types)
 
 
 

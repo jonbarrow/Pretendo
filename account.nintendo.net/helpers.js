@@ -1,5 +1,6 @@
 let constants = require('./constants'), 
-    database = require('./db');
+    database = require('./db'),
+    jwt = require('jsonwebtoken');
 
 async function generatePID() {
     let pid = '';
@@ -64,10 +65,43 @@ async function doesUserExist(username) {
 }
 
 
+function generateAccessToken(payload) {
+    let token = jwt.sign({
+        data: {
+            type: 'auth_token',
+            payload: payload
+        }
+    }, {
+        key: constants.JWT_TOKEN_CERTS.ACCESS.secret,
+        passphrase: constants.JWT_TOKEN_CERTS.ACCESS.passphrase
+    }, {
+        algorithm: 'RS256',
+        expiresIn: 3600
+    });
+
+    return token;
+}
+
+function generateRefreshToken(payload) {
+    let token = jwt.sign({
+        data: {
+            type: 'refresh_token',
+            payload: payload
+        }
+    }, {
+        key: constants.JWT_TOKEN_CERTS.REFRESH.secret,
+        passphrase: constants.JWT_TOKEN_CERTS.REFRESH.passphrase
+    }, { algorithm: 'RS256'});
+
+    return token;
+}
+
 
 module.exports = {
     generatePID: generatePID,
     generateRandID: generateRandID,
     generateNintendoHashedPWrd: generateNintendoHashedPWrd,
-    doesUserExist: doesUserExist
+    doesUserExist: doesUserExist,
+    generateAccessToken: generateAccessToken,
+    generateRefreshToken: generateRefreshToken,
 }
