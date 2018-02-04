@@ -70,21 +70,22 @@ routes.all('/access_token/generate', async (request, response) => {
         }
 
         if (!bcrypt.compareSync(POST.password, user.sensitive.password)) {
-            let error = {
+            /*let error = {
                 errors: {
                     error: {
                         code: '0106',
-                        message: 'Invalid account ID or password'
+                        message: 'Invalid account ID or password.'
                     }
                 }
             }
 
-            return response.send(json2xml(error));
+            return response.send(json2xml(error));*/
         }
         
-        let access_token = helpers.generateAccessToken({
+        /*let access_token = helpers.generateAccessToken({
             pid: user.pid
-        });
+        });*/
+		let access_token = user.pid
 
         let refresh_token = helpers.generateRefreshToken({
             pid: user.pid

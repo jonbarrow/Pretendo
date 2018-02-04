@@ -64,6 +64,19 @@ async function doesUserExist(username) {
     return false;
 }
 
+async function getuser(token) {
+    //TODO: implement actual token instead of using raw pid
+	let user = await database.user_collection.findOne({
+		pid : token
+	});
+    
+    if (user) {
+        return user;
+    }
+
+    return null;
+}
+
 
 function generateAccessToken(payload) {
     let token = jwt.sign({
@@ -104,4 +117,5 @@ module.exports = {
     doesUserExist: doesUserExist,
     generateAccessToken: generateAccessToken,
     generateRefreshToken: generateRefreshToken,
+	getuser: getuser
 }
