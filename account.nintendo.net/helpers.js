@@ -1,12 +1,17 @@
 let constants = require('./constants'), 
     database = require('./db'),
-    jwt = require('jsonwebtoken');
+    pythonStruct = require('python-struct'),
+    crypto = require('crypto');
 
 async function generatePID() {
     let pid = '';
 
     for (var i=0;i<10;i++) {
         pid += constants.PID_SORT_LIST.charAt(Math.floor(Math.random() * constants.PID_SORT_LIST.length));
+    }
+
+    if (pid > 4294967295) {
+        return await generatePID();
     }
 
     let does_pid_inuse = await database.user_collection.findOne({
@@ -31,7 +36,7 @@ function generateRandID(length = 10) {
 }
 
 function generateNintendoHashedPWrd(password, pid) {
-    let buff1 = require('python-struct').pack('<I', pid);
+    let buff1 = pythonStruct.pack('<I', pid);
     let buff2 = Buffer.from(password).toString('ascii');
 
     let unpacked = new Buffer(bufferToHex(buff1) + '\x02eCF' + buff2, 'ascii'),
@@ -64,11 +69,12 @@ async function doesUserExist(username) {
     return false;
 }
 
-async function getuser(token) {
+async function getUser(token) {
     //TODO: implement actual token instead of using raw pid
+
 	let user = await database.user_collection.findOne({
-		pid : token
-	});
+        'sensitive.tokens.access.token': token
+    });
     
     if (user) {
         return user;
@@ -79,32 +85,13 @@ async function getuser(token) {
 
 
 function generateAccessToken(payload) {
-    let token = jwt.sign({
-        data: {
-            type: 'auth_token',
-            payload: payload
-        }
-    }, {
-        key: constants.JWT_TOKEN_CERTS.ACCESS.secret,
-        passphrase: constants.JWT_TOKEN_CERTS.ACCESS.passphrase
-    }, {
-        algorithm: 'RS256',
-        expiresIn: 3600
-    });
+    let token = crypto.createHash('md5').update(JSON.stringify(payload)).digest('hex');
 
     return token;
 }
 
 function generateRefreshToken(payload) {
-    let token = jwt.sign({
-        data: {
-            type: 'refresh_token',
-            payload: payload
-        }
-    }, {
-        key: constants.JWT_TOKEN_CERTS.REFRESH.secret,
-        passphrase: constants.JWT_TOKEN_CERTS.REFRESH.passphrase
-    }, { algorithm: 'RS256'});
+    let token = crypto.createHash('md5').update(JSON.stringify(payload)).digest('hex');
 
     return token;
 }
@@ -117,5 +104,5 @@ module.exports = {
     doesUserExist: doesUserExist,
     generateAccessToken: generateAccessToken,
     generateRefreshToken: generateRefreshToken,
-	getuser: getuser
+    getUser: getUser
 }

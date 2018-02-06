@@ -1,7 +1,6 @@
 let routes = require('express').Router(),
     json2xml = require('json2xml'),
     bcrypt = require('bcryptjs'),
-    jwt = require('jsonwebtoken'),
     database = require('../../db'),
     helpers = require('../../helpers'),
     constants = require('../../constants');
@@ -70,7 +69,7 @@ routes.all('/access_token/generate', async (request, response) => {
         }
 
         if (!bcrypt.compareSync(POST.password, user.sensitive.password)) {
-            /*let error = {
+            let error = {
                 errors: {
                     error: {
                         code: '0106',
@@ -79,19 +78,23 @@ routes.all('/access_token/generate', async (request, response) => {
                 }
             }
 
-            return response.send(json2xml(error));*/
+            return response.send(json2xml(error));
         }
         
-        /*let access_token = helpers.generateAccessToken({
-            pid: user.pid
-        });*/
-		let access_token = user.pid
+        let access_token = helpers.generateAccessToken({
+            pid: user.pid,
+            token_salt: helpers.generateRandID(100)
+        });
+		//let access_token = user.pid
 
         let refresh_token = helpers.generateRefreshToken({
-            pid: user.pid
+            pid: user.pid,
+            token_salt: helpers.generateRandID(100)
         });
 
         user.sensitive.tokens.refresh = refresh_token;
+        user.sensitive.tokens.access.token = access_token;
+        user.sensitive.tokens.access.ttl = Math.floor((Date.now() / 1000) + 3600);
 
         await database.user_collection.update({
             pid: user.pid
@@ -125,40 +128,12 @@ routes.all('/access_token/generate', async (request, response) => {
             return response.send(json2xml(error));
         }
 
-        let payload;
-
-        try {
-            payload = jwt.verify(POST.refresh_token, constants.JWT_TOKEN_CERTS.REFRESH.public);
-        } catch (err) {
-            let error = {
-                errors: {
-                    error: {
-                        cause: 'refresh_token',
-                        code: '0106',
-                        message: 'Invalid Refresh Token'
-                    }
-                }
-            }
-
-            return response.send(json2xml(error));
-        }
-
-        if (payload.data.type.toLowerCase() !== 'refresh_token') {
-            let error = {
-                errors: {
-                    error: {
-                        cause: 'refresh_token',
-                        code: '0106',
-                        message: 'Invalid Refresh Token'
-                    }
-                }
-            }
-
-            return response.send(json2xml(error));
-        }
-
         let user = database.user_collection.findOne({
-            pid: payload.data.payload.pid
+            sensitive: {
+                tokens: {
+                    refresh: POST.refresh_token
+                }
+            }
         });
 
         if (!user || user.sensitive.tokens.refresh !== POST.refresh_token) {
@@ -176,17 +151,25 @@ routes.all('/access_token/generate', async (request, response) => {
         }
 
         let access_token = helpers.generateAccessToken({
-            pid: user.pid
+            pid: user.pid,
+            token_salt: helpers.generateRandID(100)
         });
 
         let refresh_token = helpers.generateRefreshToken({
-            pid: user.pid
+            pid: user.pid,
+            token_salt: helpers.generateRandID(100)
         });
 
         user.sensitive.tokens.refresh = refresh_token;
+        user.sensitive.tokens.access.token = access_token;
+        user.sensitive.tokens.access.ttl = Math.floor((Date.now() / 1000) + 3600);
 
         await database.user_collection.update({
-            pid: user.pid
+            sensitive: {
+                tokens: {
+                    refresh: POST.refresh_token
+                }
+            }
         }, {
             $set: {
                 sensitive: user.sensitive

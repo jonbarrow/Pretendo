@@ -138,6 +138,9 @@ routes.post('/', new RateLimit({
         email_code = helpers.generateRandID(6),
         email_token = randtoken.generate(32);
 
+    console.log(helpers.generateNintendoHashedPWrd(user_data.password, pid));
+    console.log(password);
+
     let document = {
         accounts: [ // WTF even is this??
             {
@@ -202,7 +205,11 @@ routes.post('/', new RateLimit({
         utc_offset: (moment.tz(user_data.tz_name).utcOffset() * 60),
         sensitive: {
             tokens: {
-                refresh: ''
+                refresh: '',
+                access: {
+                    ttl: '',
+                    token: ''
+                },
             },
             email_confims: {
                 token: email_token,
@@ -320,9 +327,11 @@ routes.get('/@me/profile', async (request, response) => {
         return response.send(json2xml(error));
     }
 	
-	let user = await helpers.getuser(headers['authorization'].replace('Bearer ',''));
+    let user = await helpers.getUser(headers['authorization'].replace('Bearer ',''));
+    
+    console.log(user)
 
-    if (user === null) {
+    if (!user) {
         let error = {
             errors: {
                 error: {
@@ -334,67 +343,14 @@ routes.get('/@me/profile', async (request, response) => {
         }
 		return response.send(json2xml(error));
     }
+
+    delete user._id;
+    delete user.sensitive;
 	
 	let person = {
-		person: {
-			accounts: {
-				account: {
-					attributes: {
-						attribute: {
-							id: user.accounts[0].account.attributes[0].attribute.id,
-							name: user.accounts[0].account.attributes[0].attribute.name,
-							updated_by: user.accounts[0].account.attributes[0].attribute.updated_by,
-							value: user.accounts[0].account.attributes[0].attribute.value,
-						}
-					},
-					domain: user.accounts[0].account.domain,
-					type: user.accounts[0].account.type,
-					username: user.accounts[0].account.id
-				}
-			},
-			active_flag: user.active_flag,
-			birth_date: user.birth_date,
-			country: user.country,
-			create_date: user.create_date,
-			gender: user.gender,
-			language: user.language,
-			updated: user.updated,
-			marketing_flag: user.marketing_flag,
-			off_device_flag: user.off_device_flag,
-			pid: user.pid,
-			email: {
-				address: user.email.address.address,
-				id: user.email.id,
-				parent: user.email.address.parent,
-				primary: user.email.address.primary,
-				reachable: user.email.reachable,
-				type: user.email.address.type,
-				updated_by: user.email.updated_by,
-				validated: user.email.address.validated,
-				validated_date: user.updated
-			},
-			mii: {
-				status: user.mii.status,
-				data: user.mii.data,
-				id: user.mii.id,
-				mii_hash: user.mii.mii_hash,
-				mii_images: {
-					mii_image: {
-						cached_url: 'https://mii-secure.account.nintendo.net/1flcdk3hks29a_standard.tga',
-						id: user.mii.mii_images[0].mii_image.id,
-						url: 'https://mii-secure.account.nintendo.net/1flcdk3hks29a_standard.tga',
-						type: user.mii.mii_images[0].mii_image.type
-					}
-				},
-				name: user.mii.name,
-				primary: user.mii.primary
-			},
-			region: user.region,
-			tz_name: user.tz_name,
-			user_id: user.user_id,
-			utc_offset: user.utc_offset
-		}
-	}
+		person: user
+    }
+
 	return response.send(json2xml(person));
 });
 
