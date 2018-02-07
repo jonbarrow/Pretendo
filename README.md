@@ -1,5 +1,11 @@
 # Pretendo
 
+<p align="center">
+    <a href="https://discord.gg/rxekqVJ" target="_blank">
+        <img src="https://discordapp.com/api/guilds/408718485913468928/widget.png?style=banner3">
+    </a>
+</p>
+
 [![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](http://forthebadge.com)
 
 ## The aim of this project is to prepare for the WiiU (and possibly 3DS, as they share many API endpoints) EOL (End of Life). Hopefully these will allow for custom servers in the (distant) future. I will be attempting to clone the functionality of every system and game service/server endpoint that I can. Though with limited knowledge and not access to every game this will be a difficult, if not impossible task to do alone.
