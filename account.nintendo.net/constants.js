@@ -29,20 +29,4 @@ module.exports = {
         EUR: 4,
         US: 2
     },
-
-    // loads in the dev certs when in dev mode.
-    // The public repo will never have the production certs.
-    // You should generate your own production certs before launching
-    JWT_TOKEN_CERTS: {
-        REFRESH: {
-            passphrase: fs.readFileSync(path.join(__dirname, 'ssl', 'jwt', ENV, 'refresh', 'pass')).toString(),
-            secret: fs.readFileSync(path.join(__dirname, 'ssl', 'jwt', ENV, 'refresh', 'private.pem')),
-            public: fs.readFileSync(path.join(__dirname, 'ssl', 'jwt', ENV, 'refresh', 'public.pem'))
-        },
-        ACCESS: {
-            passphrase: fs.readFileSync(path.join(__dirname, 'ssl', 'jwt', ENV, 'access', 'pass')).toString(),
-            secret: fs.readFileSync(path.join(__dirname, 'ssl', 'jwt', ENV, 'access', 'private.pem')),
-            public: fs.readFileSync(path.join(__dirname, 'ssl', 'jwt', ENV, 'access', 'public.pem'))
-        }
-    }
 }
