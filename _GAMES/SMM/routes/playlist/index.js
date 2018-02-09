@@ -8,7 +8,7 @@ let routes = require('express').Router(),
  * Replacement for: https://wup-ama.app.nintendo.net/api/v1/playlist
  * Description: Gets a users bookmarked courses from the SMM bookmark site
  */
-routes.get('/:difficulty', (request, response) => {
+routes.get('/', (request, response) => {
     response.set('Content-Type', 'application/xml;charset=UTF-8');
 
     // Need to check `X-Nintendo-ServiceToken` header here
