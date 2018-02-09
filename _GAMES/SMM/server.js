@@ -16,6 +16,7 @@ let port = 80,
 // API routes
 const ROUTES = {
     PICKUP: require('./routes/pickup'),
+    PLAYLIST: require('./routes/playlist'),
 }
 
 
@@ -32,7 +33,8 @@ router.use(express.urlencoded({
 app.use(subdomain('wup-ama.app', router));
 
 // Setup routes
-router.use('/v1/api/pickup', ROUTES.PICKUP); // pickup API routes
+router.use('/v1/api/pickup', ROUTES.PICKUP); // pickup API route
+router.use('/v1/api/playlist', ROUTES.PLAYLIST); // playlist API route
 
 
 // 404 handler

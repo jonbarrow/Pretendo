@@ -5,8 +5,8 @@ let routes = require('express').Router(),
 
 /**
  * [GET]
- * Replacement for: https://wup-ama.app.nintendo.net/api/v1/pickup/:difficulty
- * Description: Gets a course pickup list based on difficulty
+ * Replacement for: https://wup-ama.app.nintendo.net/api/v1/playlist
+ * Description: Gets a users bookmarked courses from the SMM bookmark site
  */
 routes.get('/:difficulty', (request, response) => {
     response.set('Content-Type', 'application/xml;charset=UTF-8');
@@ -23,7 +23,7 @@ routes.get('/:difficulty', (request, response) => {
 
     // This is temp. Only for demo purposes, to show the format
     // In production we would pull these from the database
-    for (let i=0;i<400;i++) {
+    for (let i=0;i<3;i++) {
         courses.root.courses.push({
             course: {
                 id: helpers.generateRandID(8)
