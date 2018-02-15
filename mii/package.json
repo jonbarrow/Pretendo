@@ -1,0 +1,16 @@
+{
+  "name": "mii-wiiu",
+  "version": "1.0.0",
+  "description": "",
+  "main": "bitstream.class.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bufferpack": "0.0.6",
+    "python-struct": "^1.0.6",
+    "range": "0.0.3"
+  }
+}
