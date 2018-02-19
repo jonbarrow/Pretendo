@@ -80,7 +80,7 @@ Quick note, you will need Mocha installed on your WiiU. If you followed the guid
 4. Dump the ccerts folder to your computer.
 5. Disconnect from the WiiU and exit FTPiiU_Everywhere on it.
 6. On your PC go to wher you dumped ccerts and rename WIIU_COMMON_1_CERT.der to ClientCertificate.cer
-7. Congratulations! You now have your own copy of ClientCertificate.cer. Now you can go through the setup of creating your own Prentendo server!
+7. Congratulations! You now have your own copy of ClientCertificate.cer. Now you can go through the setup of creating your own Pretendo server!
 
 # Currently implemented endpoints
 - [GET] https://account.nintendo.net/v1/api/devices/@current/status
