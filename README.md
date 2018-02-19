@@ -104,8 +104,8 @@ The entire `accounts` section at the beginning is new, and not sent by the regis
 # Developer and general thanks list
 
 ### Developers:
-<img src="https://avatars1.githubusercontent.com/u/27011796?s=40&v=4" /img>&nbsp;&nbsp;[RedDuckss](https://github.com/RedDuckss) | Lead Developer
+![RedDuckss' avatar](https://avatars1.githubusercontent.com/u/27011796?s=40&v=4)&nbsp;&nbsp;[RedDuckss](https://github.com/RedDuckss) | Lead Developer
 <br><br>
-<img src="https://avatars2.githubusercontent.com/u/19657053?s=40&v=4" /img>&nbsp;&nbsp;[SuperMarioDaBom](https://github.com/SuperMarioDaBom) | Development
+![SuperMarioDaBom's avatar](https://avatars2.githubusercontent.com/u/19657053?s=40&v=4)&nbsp;&nbsp;[SuperMarioDaBom](https://github.com/SuperMarioDaBom) | Development
 <br><br>
-<img src="https://avatars2.githubusercontent.com/u/10212424?s=40&v=4" /img>&nbsp;&nbsp;[superwhiskers](https://github.com/superwhiskers) | Development
+![superwhiskers' vatar](https://avatars2.githubusercontent.com/u/10212424?s=40&v=4)&nbsp;&nbsp;[superwhiskers](https://github.com/superwhiskers) | Development
