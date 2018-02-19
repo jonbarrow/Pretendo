@@ -24,7 +24,7 @@ Not far at all. Currently only a few basic endpoints are implemented, and a few 
 - [Python](https://python.org)
 - [This repo](https://github.com/RedDuckss/Pretendo/archive/master.zip) (or just clone it)
 - Homebrew on either your [WiiU](https://wiiu.hacks.guide) or [3DS](https://3ds.hacks.guide)
-- [This file](https://mega.nz/#!5rx1xKyS), It will ask for a key, you'll have to join the discord and PM superwhiskers for it. If you would like to get it yourself, go down to the 'Getting the ClientCertificate.cer' for your respective console.
+- [This file](https://mega.nz/#!5rx1xKyS!iusrXFMZUiYhuOO-wAsi9FQyBIVdmpvYHyBqqn_GOcU) If you would like to get it yourself, go down to the 'Getting the ClientCertificate.cer' for your respective console.
 - [This set of patches for the 3DS](https://mega.nz/#!UuxnxIKK!vRCKoU88RUu7uqvTXFNErWOoccxvN7kskaQAoMZ-00w)
 
 ### Setup (Computah):
