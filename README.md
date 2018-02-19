@@ -15,7 +15,7 @@
 2. Customization - With a custom server you have full control. Nintendo currently enforces certain things which may not be desirable to all (for example, requiring console-specific information to login and use services, as official accounts are tied to consoles.) This could also become useful for tools like Cemu and Citra, which the former currently supports online play but requires dumps of console-specific files to get online (as, again, official accounts are tied to consoles.) Custom servers could remove this barrier and allow anyone to go online with Cemu (and potentially Citra, if they make it work.)
 
 # Cool! How far along is it?
-Not far at all. Currently only a few basic endpoints are implemented, and a few of them not to completion (see below.) There is also the issue of Nintendo using UDP/PRUDP for all online games, like MK8 or SMM, and a few system services, like the friends system. I have little experience with UDP in general let alone a custom layer on top of it. I am looking for people to help me in those areas, as alone I will probably never get them done.
+Not far at all. Currently only a few basic endpoints are implemented, and a few of them not to completion (see below.) There is also the issue of Nintendo using UDP/PRUDP for all online games, like MK8 or SMM, and a few system services, like the friends system. I have little experience with UDP in general let alone a custom layer on top of it.
 
 # Running a server
 ### Prerequisites:
@@ -29,7 +29,7 @@ Not far at all. Currently only a few basic endpoints are implemented, and a few 
 
 ### Setup (Computah):
 1. Enter the source folder (where you downloaded it to)
-2. Type `python launch.py` on your computer (subject to change, as the other two haven't responded yet)
+2. Type `python launch.py` on your computer
 3. In Fiddler, open `Tools > Options`
 4. In the `HTTPS` tab turn on HTTPS Connects
 5. Enable HTTPS decrypting
