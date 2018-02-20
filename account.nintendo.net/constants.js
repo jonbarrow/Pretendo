@@ -12,7 +12,8 @@ module.exports = {
     PID_SORT_LIST: '0123456789',
     VALID_CLIENT_ID_SECRET_PAIRS: {
         // 'Key' is the client ID, 'Value' is the client secret
-        'a2efa818a34fa16b8afbc8a74eba3eda': 'c91cdb5658bd4954ade78533a339cf9a'
+        'a2efa818a34fa16b8afbc8a74eba3eda': 'c91cdb5658bd4954ade78533a339cf9a',
+        'daf6227853bcbdce3d75baee8332b': '3eff548eac636e2bf45bb7b375e7b6b0'
     },
     REGEX: {
         HEADER_FORMATS: {
