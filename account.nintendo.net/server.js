@@ -46,6 +46,7 @@ const ROUTES = {
 }
 
 // START APPLICATION
+app.set('etag', false);
 
 // Create router
 app.use(morgan('dev'));

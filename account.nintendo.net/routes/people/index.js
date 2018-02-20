@@ -202,6 +202,7 @@ routes.post('/', new RateLimit({
         region: user_data.region,
         tz_name: user_data.tz_name,
         user_id: user_data.user_id,
+        user_id_flat: user_data.user_id.toLowerCase(),
         utc_offset: (moment.tz(user_data.tz_name).utcOffset() * 60),
         sensitive: {
             tokens: {
@@ -301,7 +302,7 @@ routes.get('/:username', async (request, response) => {
 
 /**
  * [GET]
- * Replacement for: https://account.nintendo.net/v1/api/@me/profile
+ * Replacement for: https://account.nintendo.net/v1/api/people/@me/profile
  * Description: Gets profile data
  */
 routes.get('/@me/profile', async (request, response) => {
@@ -317,9 +318,9 @@ routes.get('/@me/profile', async (request, response) => {
         let error = {
             errors: {
                 error: {
-                    cause: 'no token',
+                    cause: 'access_token',
                     code: '0002',
-                    message: 'No token in header'
+                    message: 'Invalid access token'
                 }
             }
         }
@@ -328,8 +329,6 @@ routes.get('/@me/profile', async (request, response) => {
     }
 	
     let user = await helpers.getUser(headers['authorization'].replace('Bearer ',''));
-    
-    console.log(user)
 
     if (!user) {
         let error = {
@@ -344,14 +343,68 @@ routes.get('/@me/profile', async (request, response) => {
 		return response.send(json2xml(error));
     }
 
-    delete user._id;
-    delete user.sensitive;
-	
-	let person = {
-		person: user
+    let person = {
+        person: {
+            accounts: {
+                account: {
+                    attributes: {
+                        attribute: {
+                            id: user.accounts[0].account.attributes[0].attribute.id,
+                            name: user.accounts[0].account.attributes[0].attribute.name,
+                            updated_by: user.accounts[0].account.attributes[0].attribute.updated_by,
+                            value: user.accounts[0].account.attributes[0].attribute.value,
+                        }
+                    },
+                    domain: user.accounts[0].account.domain,
+                    type: user.accounts[0].account.type,
+                    username: user.accounts[0].account.id
+                }
+            },
+            active_flag: user.active_flag,
+            birth_date: user.birth_date,
+            country: user.country,
+            create_date: user.create_date,
+            gender: user.gender,
+            language: user.language,
+            updated: user.updated,
+            marketing_flag: user.marketing_flag,
+            off_device_flag: user.off_device_flag,
+            pid: user.pid,
+            email: {
+                address: user.email.address.address,
+                id: user.email.id,
+                parent: user.email.address.parent,
+                primary: user.email.address.primary,
+                reachable: user.email.reachable,
+                type: user.email.address.type,
+                updated_by: user.email.updated_by,
+                validated: user.email.address.validated,
+                validated_date: user.updated
+            },
+            mii: {
+                status: user.mii.status,
+                data: user.mii.data,
+                id: user.mii.id,
+                mii_hash: user.mii.mii_hash,
+                mii_images: {
+                    mii_image: {
+                        cached_url: 'https://mii-secure.account.nintendo.net/1flcdk3hks29a_standard.tga',
+                        id: user.mii.mii_images[0].mii_image.id,
+                        url: 'https://mii-secure.account.nintendo.net/1flcdk3hks29a_standard.tga',
+                        type: user.mii.mii_images[0].mii_image.type
+                    }
+                },
+                name: user.mii.name,
+                primary: user.mii.primary
+            },
+            region: user.region,
+            tz_name: user.tz_name,
+            user_id: user.user_id,
+            utc_offset: user.utc_offset
+        }
     }
-
-	return response.send(json2xml(person));
+    
+    return response.send(json2xml(person));
 });
 
 module.exports = routes;
