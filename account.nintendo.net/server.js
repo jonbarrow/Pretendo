@@ -31,6 +31,7 @@ let port = 80,
     colors = require('colors'),
     morgan = require('morgan'),
     app = express(),
+    testing_env = true,
     router = express.Router();
 
 // API routes
@@ -41,6 +42,7 @@ const ROUTES = {
     SUPPORT: require('./routes/support'),
     OAUTH20: require('./routes/oauth20'),
     PROVIDER: require('./routes/provider'),
+    ADMIN: require('./routes/admin')
 }
 
 // START APPLICATION
@@ -54,15 +56,20 @@ router.use(express.urlencoded({
 }));
 
 // Create subdomain
-app.use(subdomain('account', router));
+if (testing_env === false) {
+  app.use(subdomain('account', router));
+} else {
+  app.use(router)
+}
 
 // Setup routes
-router.use('/v1/api/content', ROUTES.CONTENT); // content API routes
-router.use('/v1/api/devices', ROUTES.DEVICES); // device API routes
-router.use('/v1/api/people', ROUTES.PEOPLE); // people API routes
-router.use('/v1/api/support', ROUTES.SUPPORT); // support API routes
-router.use('/v1/api/oauth20', ROUTES.OAUTH20); // OAuth API routes
+router.use('/v1/api/content', ROUTES.CONTENT);   // content API routes
+router.use('/v1/api/devices', ROUTES.DEVICES);   // device API routes
+router.use('/v1/api/people', ROUTES.PEOPLE);     // people API routes
+router.use('/v1/api/support', ROUTES.SUPPORT);   // support API routes
+router.use('/v1/api/oauth20', ROUTES.OAUTH20);   // OAuth API routes
 router.use('/v1/api/provider', ROUTES.PROVIDER); // OAuth API routes
+router.use('/v1/api/admin', ROUTES.ADMIN);       // admin API routes (not sure what these do in general)
 
 
 // 404 handler
