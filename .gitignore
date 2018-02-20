@@ -61,5 +61,5 @@ typings/
 ./_proxy
 ./mii/nn
 ./mii/models
-./mii/parts/nigaeoParts
+./mii/parts/nigaoeParts
 ./account.nintendo.net/ssl/jwt/production
