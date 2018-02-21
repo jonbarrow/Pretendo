@@ -407,4 +407,48 @@ routes.get('/@me/profile', async (request, response) => {
     return response.send(json2xml(person));
 });
 
+
+/**
+ * [POST]
+ * Replacement for: https://account.nintendo.net/v1/api/people/@me/miis/@primary
+ * Description: Updates user Mii
+ */
+routes.post('/@me/miis/@primary', async (request, response) => {
+    response.set('Content-Type', 'text/xml');
+    response.set('Server', 'Nintendo 3DS (http)');
+    response.set('X-Nintendo-Date', new Date().getTime());
+
+    let headers = request.headers;
+
+});
+
+/**
+ * [GET]
+ * Replacement for: https://account.nintendo.net/v1/api/people/@me/devices/owner
+ * Description: Gets user profile, seems to be the same as https://account.nintendo.net/v1/api/people/@me/profile
+ */
+routes.post('/@me/devices/owner', async (request, response) => {
+    response.set('Content-Type', 'text/xml');
+    response.set('Server', 'Nintendo 3DS (http)');
+    response.set('X-Nintendo-Date', new Date().getTime());
+
+    let headers = request.headers;
+
+});
+
+/**
+ * [GET]
+ * Replacement for: https://account.nintendo.net/v1/api/people/@me/devices
+ * Description: Gets user profile, seems to be the same as https://account.nintendo.net/v1/api/people/@me/profile
+ */
+routes.post('/@me/devices', async (request, response) => {
+    response.set('Content-Type', 'text/xml');
+    response.set('Server', 'Nintendo 3DS (http)');
+    response.set('X-Nintendo-Date', new Date().getTime());
+
+    let headers = request.headers;
+
+});
+
+
 module.exports = routes;

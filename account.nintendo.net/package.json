@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "cassandra-driver": "^3.4.1",
     "colors": "^1.1.2",
     "express": "^4.16.2",
     "express-rate-limit": "^2.11.0",
